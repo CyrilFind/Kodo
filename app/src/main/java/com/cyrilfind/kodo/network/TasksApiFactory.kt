@@ -7,7 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class ApiFactory {
+class TasksApiFactory {
     private val okHttpClient by lazy {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -32,7 +32,7 @@ class ApiFactory {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    val todoService: TodoService by lazy { retrofit.create(TodoService::class.java) }
+    val tasksService: TasksService by lazy { retrofit.create(TasksService::class.java) }
 
     companion object {
         const val TOKEN = "***REMOVED***"

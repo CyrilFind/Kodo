@@ -1,47 +1,45 @@
-package com.cyrilfind.kodo.main
+package com.cyrilfind.kodo.tasklist
 
 import android.os.Bundle
-import android.view.Menu
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cyrilfind.kodo.R
-import com.cyrilfind.kodo.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.cyrilfind.kodo.databinding.TasksListFragmentBinding
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
 import org.jetbrains.anko.okButton
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class TaskListFragment : Fragment() {
+    private lateinit var binding: TasksListFragmentBinding
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+        ViewModelProviders.of(this).get(TaskListViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.mainContent.tasksRecyclerView.adapter = viewModel.recyclerAdapter
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        binding = TasksListFragmentBinding.inflate(layoutInflater)
+        binding.tasksRecyclerView.adapter = viewModel.recyclerAdapter
         binding.fab.setOnClickListener(this::onClickFab)
-        binding.mainContent.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
-        binding.mainContent.swipeRefresh.setColorSchemeResources(
+        binding.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
+        binding.swipeRefresh.setColorSchemeResources(
             R.color.colorPrimary,
             R.color.colorPrimaryDark,
             R.color.colorAccent
         )
         viewModel.tasksListLiveData.observe(this, Observer {
-            binding.mainContent.tasksRecyclerView.smoothScrollToPosition(0)
+            binding.tasksRecyclerView.smoothScrollToPosition(0)
         })
         viewModel.isRefreshing.observe(this, Observer {
-            binding.mainContent.swipeRefresh.isRefreshing = it
+            binding.swipeRefresh.isRefreshing = it
         })
-
-        setSupportActionBar(toolbar)
         viewModel.refreshTasks()
+        return binding.root
     }
 
     private fun onClickFab(view: View) {
@@ -53,18 +51,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAddItemDialog(onFinish: (String?) -> Unit) {
-        val editText = EditText(this)
-        alert(R.string.add_task_dialog_message, R.string.add_task_dialog_title) {
+        val editText = EditText(context)
+        context?.alert(R.string.add_task_dialog_message, R.string.add_task_dialog_title) {
             customView = editText
             okButton { onFinish(editText.text.toString()) }
             cancelButton { onFinish(null) }
             onCancelled { onFinish(null) }
-        }.show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+        }?.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

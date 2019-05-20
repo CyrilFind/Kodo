@@ -1,16 +1,14 @@
-package com.cyrilfind.kodo.main
+package com.cyrilfind.kodo.tasklist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewModelScope
 import com.cyrilfind.kodo.model.Task
-import com.cyrilfind.kodo.main.content.TasksAdapter
-import com.cyrilfind.kodo.network.TodoRepository
+import com.cyrilfind.kodo.network.TasksRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-
+class TaskListViewModel : ViewModel() {
     private var _tasksListLiveData = MutableLiveData<List<Task>>()
     private val tasksList = mutableListOf<Task>()
     val tasksListLiveData: LiveData<List<Task>>
@@ -20,9 +18,9 @@ class MainViewModel : ViewModel() {
     val isRefreshing: LiveData<Boolean>
         get() = _isRefreshing
 
-    private val todoRepository = TodoRepository()
+    private val todoRepository = TasksRepository()
     val recyclerAdapter =
-        TasksAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
+        TaskListAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
 
     private fun onClickDelete(position: Int) {
         viewModelScope.launch {
@@ -70,5 +68,4 @@ class MainViewModel : ViewModel() {
     private fun notifyLiveData() {
         _tasksListLiveData.postValue(tasksList)
     }
-
 }

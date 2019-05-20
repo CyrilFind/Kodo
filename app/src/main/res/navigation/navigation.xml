@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation.xml"
+            app:startDestination="@+id/tasksListFragment"
+            android:label="To Do">
+
+    <fragment
+            tools:layout="@layout/tasks_list_fragment"
+            android:id="@+id/tasksListFragment"
+            android:name="com.cyrilfind.kodo.tasklist.TaskListFragment"
+            android:label="TasksListFragment"/>
+</navigation>

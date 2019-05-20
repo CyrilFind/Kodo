@@ -2,8 +2,8 @@ package com.cyrilfind.kodo.network
 
 import com.cyrilfind.kodo.model.Task
 
-class TodoRepository {
-    private val todoService = ApiFactory().todoService
+class TasksRepository {
+    private val todoService = TasksApiFactory().tasksService
 
     suspend fun getTasks(): List<Task>? {
         return todoService.getTasks()?.sortedByDescending { it.id }
