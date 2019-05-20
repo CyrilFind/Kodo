@@ -7,65 +7,43 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.cyrilfind.kodo.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.launch
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
 import org.jetbrains.anko.okButton
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var tasksList = mutableListOf<Task>()
-    private val todoRepository = TodoRepository()
-    private val recyclerAdapter
-        get() = binding.mainContent.tasksRecyclerView.adapter
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.mainContent.tasksRecyclerView.adapter = TasksAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
+        binding.mainContent.tasksRecyclerView.adapter = viewModel.recyclerAdapter
         binding.fab.setOnClickListener(this::onClickFab)
-        binding.mainContent.swiperefresh.setOnRefreshListener(this::refreshTasks)
+        binding.mainContent.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
+        binding.mainContent.swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent)
+        viewModel.tasksListLiveData.observe(this, Observer {
+            binding.mainContent.tasksRecyclerView.smoothScrollToPosition(0)
+        })
+        viewModel.isRefreshing.observe(this, Observer {
+            binding.mainContent.swipeRefresh.isRefreshing = it
+        })
 
         setSupportActionBar(toolbar)
-        refreshTasks()
-    }
-
-    private fun onClickDelete(position: Int) {
-        lifecycleScope.launch {
-            val task = tasksList[position]
-            if (todoRepository.deleteTask(task)) {
-                tasksList.removeAt(position)
-                recyclerAdapter?.notifyItemRemoved(position)
-            }
-        }
-    }
-
-    private fun onClickCheckbox(position: Int, checked: Boolean, callback: (Boolean) -> Unit) {
-        lifecycleScope.launch {
-            val task = tasksList[position]
-            task.checked = todoRepository.checkTask(task, checked)
-            callback(task.checked)
-        }
+        viewModel.refreshTasks()
     }
 
     private fun onClickFab(view: View) {
         view.isEnabled = false
         showAddItemDialog { text ->
-            if (null != text) addTaskToList(text)
+            if (null != text) viewModel.addTaskToList(text)
             view.isEnabled = true
-        }
-    }
-
-    private fun addTaskToList(text: String) {
-        lifecycleScope.launch {
-            todoRepository.createTask(text)?.let { task ->
-                tasksList.add(0, task)
-                recyclerAdapter?.notifyItemInserted(0)
-                binding.mainContent.tasksRecyclerView.smoothScrollToPosition(0)
-            }
         }
     }
 
@@ -79,17 +57,6 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
 
-    private fun refreshTasks() {
-        lifecycleScope.launch {
-            todoRepository.getTasks()?.let { tasks ->
-                tasksList.clear()
-                tasksList.addAll(tasks)
-                recyclerAdapter?.notifyDataSetChanged()
-            }
-            binding.mainContent.swiperefresh.isRefreshing = false
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -99,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.action_refresh -> {
-                refreshTasks()
+                viewModel.refreshTasks()
                 true
             }
             else -> super.onOptionsItemSelected(item)

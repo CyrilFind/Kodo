@@ -2,33 +2,32 @@ package com.cyrilfind.kodo
 
 import android.graphics.Paint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cyrilfind.kodo.databinding.ItemViewBinding
-import kotlinx.android.synthetic.main.item_view.view.*
 
 class TasksAdapter(
-    private val tasksList: List<Task>,
+    private val tasksList: MutableList<Task>,
     private val onClickDelete: (Int) -> Unit,
     private val onClickCheckbox: (Int, Boolean, (Boolean) -> Unit) -> Unit
 ) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemView = ItemViewBinding.inflate(inflater)
-        return TasksViewHolder(itemView.root)
+        val binding = ItemViewBinding.inflate(inflater)
+        return TasksViewHolder(binding)
     }
 
     override fun getItemCount(): Int = tasksList.size
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) = holder.bind(tasksList[position])
 
-    inner class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TasksViewHolder(private val binding: ItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
+
         init {
-            itemView.itemDeleteButton.setOnClickListener { onClickDelete(adapterPosition) }
-            itemView.itemCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.itemDeleteButton.setOnClickListener { onClickDelete(adapterPosition) }
+            binding.itemCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
                 if(!buttonView.isPressed) return@setOnCheckedChangeListener // ignore changes from code
                 buttonView.isEnabled = false
                 onClickCheckbox(adapterPosition, isChecked) { reallyChecked ->
@@ -39,12 +38,12 @@ class TasksAdapter(
         }
 
         private fun setChecked(reallyChecked: Boolean) {
-            itemView.itemCheckBox.isChecked = reallyChecked
-            itemView.itemTextView.strikeThrough = reallyChecked
+            binding.itemCheckBox.isChecked = reallyChecked
+            binding.itemTextView.strikeThrough = reallyChecked
         }
 
         fun bind(task: Task) {
-            itemView.itemTextView.text = task.text
+            binding.itemTextView.text = task.text
             setChecked(task.checked)
         }
 
