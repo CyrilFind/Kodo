@@ -1,4 +1,4 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.main.content
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cyrilfind.kodo.databinding.ItemViewBinding
+import com.cyrilfind.kodo.model.Task
 
 class TasksAdapter(
     private val tasksList: MutableList<Task>,

@@ -1,4 +1,4 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.main
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.cyrilfind.kodo.R
 import com.cyrilfind.kodo.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.alert
@@ -27,7 +28,11 @@ class MainActivity : AppCompatActivity() {
         binding.mainContent.tasksRecyclerView.adapter = viewModel.recyclerAdapter
         binding.fab.setOnClickListener(this::onClickFab)
         binding.mainContent.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
-        binding.mainContent.swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent)
+        binding.mainContent.swipeRefresh.setColorSchemeResources(
+            R.color.colorPrimary,
+            R.color.colorPrimaryDark,
+            R.color.colorAccent
+        )
         viewModel.tasksListLiveData.observe(this, Observer {
             binding.mainContent.tasksRecyclerView.smoothScrollToPosition(0)
         })

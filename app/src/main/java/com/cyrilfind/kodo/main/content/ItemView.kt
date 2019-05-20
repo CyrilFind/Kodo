@@ -1,4 +1,4 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.main.content
 
 import android.content.Context
 import android.widget.CheckBox

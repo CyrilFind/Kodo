@@ -1,9 +1,12 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cyrilfind.kodo.model.Task
+import com.cyrilfind.kodo.main.content.TasksAdapter
+import com.cyrilfind.kodo.network.TodoRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -18,7 +21,8 @@ class MainViewModel : ViewModel() {
         get() = _isRefreshing
 
     private val todoRepository = TodoRepository()
-    val recyclerAdapter = TasksAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
+    val recyclerAdapter =
+        TasksAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
 
     private fun onClickDelete(position: Int) {
         viewModelScope.launch {

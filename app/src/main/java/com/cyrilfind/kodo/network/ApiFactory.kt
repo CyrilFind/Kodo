@@ -1,4 +1,4 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

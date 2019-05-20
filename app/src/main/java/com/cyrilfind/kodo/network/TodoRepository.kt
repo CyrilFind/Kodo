@@ -1,4 +1,6 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.network
+
+import com.cyrilfind.kodo.model.Task
 
 class TodoRepository {
     private val todoService = ApiFactory().todoService

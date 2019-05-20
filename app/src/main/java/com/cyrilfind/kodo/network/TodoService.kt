@@ -1,5 +1,6 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.network
 
+import com.cyrilfind.kodo.model.Task
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*

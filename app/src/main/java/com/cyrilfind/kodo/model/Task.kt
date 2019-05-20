@@ -1,4 +1,4 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
