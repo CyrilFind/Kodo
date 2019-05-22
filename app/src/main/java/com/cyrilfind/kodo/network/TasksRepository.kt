@@ -5,8 +5,10 @@ import com.cyrilfind.kodo.model.Task
 class TasksRepository {
     private val todoService = TasksApiFactory().tasksService
 
-    suspend fun getTasks(): List<Task>? {
-        return todoService.getTasks()?.sortedByDescending { it.id }
+    suspend fun getTasks(reverse: Boolean = false): List<Task>? {
+        var tasks = todoService.getTasks()
+        if (reverse) tasks = tasks?.sortedByDescending { it.id }
+        return tasks
     }
 
     suspend fun createTask(text: String): Task? {

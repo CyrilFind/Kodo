@@ -1,14 +1,12 @@
 package com.cyrilfind.kodo.tasklist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import com.cyrilfind.kodo.R
 import com.cyrilfind.kodo.databinding.TasksListFragmentBinding
 import org.jetbrains.anko.alert
@@ -23,6 +21,7 @@ class TaskListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
         binding = TasksListFragmentBinding.inflate(layoutInflater)
         binding.tasksRecyclerView.adapter = viewModel.recyclerAdapter
         binding.fab.setOnClickListener(this::onClickFab)
@@ -32,12 +31,14 @@ class TaskListFragment : Fragment() {
             R.color.colorPrimaryDark,
             R.color.colorAccent
         )
-        viewModel.tasksListLiveData.observe(this, Observer {
-            binding.tasksRecyclerView.smoothScrollToPosition(0)
-        })
         viewModel.isRefreshing.observe(this, Observer {
             binding.swipeRefresh.isRefreshing = it
         })
+        viewModel.tasksListLiveData.observe(this, Observer {
+            binding.tasksRecyclerView.smoothScrollToPosition(0)
+        })
+        activity?.actionBar?.title = PreferenceManager.getDefaultSharedPreferences(context!!).getString("title", "")
+        viewModel.reverseOrder = PreferenceManager.getDefaultSharedPreferences(context!!).getBoolean("order", false)
         viewModel.refreshTasks()
         return binding.root
     }
@@ -52,6 +53,8 @@ class TaskListFragment : Fragment() {
 
     private fun showAddItemDialog(onFinish: (String?) -> Unit) {
         val editText = EditText(context)
+        editText.setText(PreferenceManager.getDefaultSharedPreferences(context!!).getString("default_text", ""))
+        editText.setSelection(editText.text.length)
         context?.alert(R.string.add_task_dialog_message, R.string.add_task_dialog_title) {
             customView = editText
             okButton { onFinish(editText.text.toString()) }
@@ -60,9 +63,12 @@ class TaskListFragment : Fragment() {
         }?.show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_task_list, menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
             R.id.action_refresh -> {
                 viewModel.refreshTasks()
                 true

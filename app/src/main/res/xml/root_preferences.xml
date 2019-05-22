@@ -1,0 +1,26 @@
+<androidx.preference.PreferenceScreen
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+            app:title="Display">
+
+        <EditTextPreference
+                app:key="default_text"
+                app:title="Default Task Text"
+                app:useSimpleSummaryProvider="true"/>
+
+        <ListPreference
+                app:key="title"
+                app:title="Screen title"
+                app:entries="@array/title_entries"
+                app:entryValues="@array/title_values"
+                app:defaultValue="kodo"
+                app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreferenceCompat
+                app:key="order"
+                app:title="Reverse task list order"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

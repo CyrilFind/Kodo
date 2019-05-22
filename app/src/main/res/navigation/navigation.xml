@@ -10,5 +10,14 @@
             tools:layout="@layout/tasks_list_fragment"
             android:id="@+id/tasksListFragment"
             android:name="com.cyrilfind.kodo.tasklist.TaskListFragment"
-            android:label="TasksListFragment"/>
+            android:label="To Do">
+        <action
+                android:id="@+id/action_tasksListFragment_to_settings"
+                app:destination="@id/settings"/>
+    </fragment>
+    <fragment
+            tools:layout="@layout/settings_fragment"
+            android:id="@+id/settings"
+            android:name="com.cyrilfind.kodo.SettingsFragment"
+            android:label="Settings"/>
 </navigation>

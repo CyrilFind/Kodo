@@ -1,0 +1,14 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="title_entries">
+        <item>ToDo</item>
+        <item>KoDo</item>
+        <item>Tasks</item>
+    </string-array>
+
+    <string-array name="title_values">
+        <item>todo</item>
+        <item>kodo</item>
+        <item>tasks</item>
+    </string-array>
+</resources>

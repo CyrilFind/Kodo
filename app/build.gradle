@@ -44,6 +44,7 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation 'androidx.preference:preference:1.1.0-alpha05'
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     // Retrofit
@@ -62,7 +63,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     // Navigation
-    implementation"android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Tests
