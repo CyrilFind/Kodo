@@ -14,7 +14,6 @@
                 app:title="Screen title"
                 app:entries="@array/title_entries"
                 app:entryValues="@array/title_values"
-                app:defaultValue="kodo"
                 app:useSimpleSummaryProvider="true"/>
 
         <SwitchPreferenceCompat

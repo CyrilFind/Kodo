@@ -3,6 +3,7 @@ package com.cyrilfind.kodo.tasklist
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +18,10 @@ class TaskListFragment : Fragment() {
     private lateinit var binding: TasksListFragmentBinding
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(TaskListViewModel::class.java)
+    }
+
+    private val sharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,9 +42,9 @@ class TaskListFragment : Fragment() {
         viewModel.tasksListLiveData.observe(this, Observer {
             binding.tasksRecyclerView.smoothScrollToPosition(0)
         })
-        activity?.actionBar?.title = PreferenceManager.getDefaultSharedPreferences(context!!).getString("title", "")
-        viewModel.reverseOrder = PreferenceManager.getDefaultSharedPreferences(context!!).getBoolean("order", false)
+        viewModel.reverseOrder = sharedPreferences.getBoolean("order", false)
         viewModel.refreshTasks()
+        (activity as? AppCompatActivity)?.supportActionBar?.title = sharedPreferences.getString("title", "")
         return binding.root
     }
 
@@ -53,7 +58,7 @@ class TaskListFragment : Fragment() {
 
     private fun showAddItemDialog(onFinish: (String?) -> Unit) {
         val editText = EditText(context)
-        editText.setText(PreferenceManager.getDefaultSharedPreferences(context!!).getString("default_text", ""))
+        editText.setText(sharedPreferences.getString("default_text", ""))
         editText.setSelection(editText.text.length)
         context?.alert(R.string.add_task_dialog_message, R.string.add_task_dialog_title) {
             customView = editText
