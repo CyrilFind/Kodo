@@ -1,5 +1,6 @@
 package com.cyrilfind.kodo.network
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -7,7 +8,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class TasksApiFactory {
+object TasksApi {
+    private const val TOKEN = "***REMOVED***"
+    private const val BASE_URL = "https://beta.todoist.com/API/v8/"
+    val tasksService: TasksService by lazy { retrofit.create(TasksService::class.java) }
+
     private val okHttpClient by lazy {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -30,13 +35,7 @@ class TasksApiFactory {
         .client(okHttpClient)
         .baseUrl(BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
-
-    val tasksService: TasksService by lazy { retrofit.create(TasksService::class.java) }
-
-    companion object {
-        const val TOKEN = "***REMOVED***"
-        const val BASE_URL = "https://beta.todoist.com/API/v8/"
-    }
 }
 

@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.cyrilfind.kodo.R
 import com.cyrilfind.kodo.databinding.TasksListFragmentBinding
+import com.cyrilfind.kodo.model.Task
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
 import org.jetbrains.anko.okButton
@@ -29,6 +31,7 @@ class TaskListFragment : Fragment() {
         setHasOptionsMenu(true)
         binding = TasksListFragmentBinding.inflate(layoutInflater)
         binding.tasksRecyclerView.adapter = viewModel.recyclerAdapter
+        viewModel.recyclerAdapter.onClickItem = this::onClickTask
         binding.fab.setOnClickListener(this::onClickFab)
         binding.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
         binding.swipeRefresh.setColorSchemeResources(
@@ -46,6 +49,10 @@ class TaskListFragment : Fragment() {
         viewModel.refreshTasks()
         (activity as? AppCompatActivity)?.supportActionBar?.title = sharedPreferences.getString("title", "")
         return binding.root
+    }
+
+    private fun onClickTask(task: Task) {
+        findNavController().navigate(TaskListFragmentDirections.openTask(task))
     }
 
     private fun onClickFab(view: View) {

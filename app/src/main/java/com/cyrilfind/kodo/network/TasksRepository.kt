@@ -3,7 +3,7 @@ package com.cyrilfind.kodo.network
 import com.cyrilfind.kodo.model.Task
 
 class TasksRepository {
-    private val todoService = TasksApiFactory().tasksService
+    private val todoService = TasksApi.tasksService
 
     suspend fun getTasks(reverse: Boolean = false): List<Task>? {
         var tasks = todoService.getTasks()

@@ -14,6 +14,18 @@
         <action
                 android:id="@+id/action_tasksListFragment_to_settings"
                 app:destination="@id/settings"/>
+        <action
+                android:id="@+id/openTask"
+                app:destination="@id/taskFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/taskFragment"
+            android:name="com.cyrilfind.kodo.task.TaskFragment"
+            tools:layout="@layout/task_fragment"
+            android:label="TaskFragment">
+        <argument
+                android:name="task"
+                app:argType="com.cyrilfind.kodo.model.Task"/>
     </fragment>
     <fragment
             tools:layout="@layout/settings_fragment"

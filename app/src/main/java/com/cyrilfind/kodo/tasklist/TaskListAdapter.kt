@@ -14,6 +14,7 @@ class TaskListAdapter(
     private val onClickDelete: (Int) -> Unit,
     private val onClickCheckbox: (Int, Boolean, (Boolean) -> Unit) -> Unit
 ) : RecyclerView.Adapter<TaskListAdapter.TasksViewHolder>() {
+    var onClickItem: (Task) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,6 +31,7 @@ class TaskListAdapter(
         init {
             binding.itemDeleteButton.setOnClickListener { onClickDelete(adapterPosition) }
             binding.itemCheckBox.setOnCheckedChangeListener(this::onCheckChange)
+            binding.itemCardView.setOnClickListener { onClickItem(tasksList[adapterPosition]) }
         }
 
         private fun onCheckChange(buttonView: CompoundButton, isChecked: Boolean) {

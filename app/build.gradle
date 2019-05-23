@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -45,6 +47,7 @@ dependencies {
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation 'androidx.preference:preference:1.1.0-alpha05'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     // Retrofit

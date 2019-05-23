@@ -2,6 +2,7 @@ package com.cyrilfind.kodo.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Task(
@@ -10,4 +11,4 @@ data class Task(
     var text: String = "",
     @Json(name = "completed")
     var checked: Boolean = false
-)
+) : Serializable
