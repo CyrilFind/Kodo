@@ -1,6 +1,5 @@
 package com.cyrilfind.kodo.network
 
-import com.cyrilfind.kodo.model.ShittyTask
 import com.cyrilfind.kodo.model.Task
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -12,7 +11,10 @@ interface TasksService {
 
     @FormUrlEncoded
     @POST("https://todoist.com/API/v8.1/items/get_completed")
-    suspend fun getCompletedTasks(@Field("offset") offset: Int = 0, @Field("project_id") projectId: Long = ***REMOVED***) : List<ShittyTask>?
+    suspend fun getCompletedTasks(
+        @Field("offset") offset: Int = 0,
+        @Field("project_id") projectId: Long = ***REMOVED***
+    ): List<Task>?
 
     @POST("tasks")
     @Headers("Content-Type: application/json")

@@ -45,7 +45,7 @@ class TaskListAdapter(
 
         fun bind(task: Task) {
             binding.itemTextView.text = task.text
-            setChecked(task.checked)
+            setChecked(task.completed)
         }
 
         private fun setChecked(checked: Boolean) {

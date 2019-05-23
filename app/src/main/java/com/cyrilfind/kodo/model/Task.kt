@@ -10,16 +10,10 @@ data class Task(
     @Json(name = "content")
     var text: String = "",
     @Json(name = "completed")
-    var checked: Boolean = false
-) : Serializable
-
-
-data class ShittyTask(
-    val id: String? = null,
-    var content: String = "",
+    var completed: Boolean = false,
     var checked: Int? = null
-) {
-    fun toTask(): Task {
-        return Task(id, content, checked == 1)
+) : Serializable {
+    init {
+        checked?.let { completed = checked == 1 }
     }
 }

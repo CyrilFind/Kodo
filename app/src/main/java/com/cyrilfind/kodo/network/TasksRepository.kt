@@ -8,9 +8,8 @@ class TasksRepository {
     suspend fun getTasks(reverse: Boolean = false, completed: Boolean = false): List<Task>? {
         val tasks = mutableListOf<Task>()
         val activeTasks = todoService.getTasks() ?: emptyList()
-        val completedTasks = if (completed) todoService.getCompletedTasks()?.map { it.toTask() } ?: emptyList() else emptyList()
         tasks.addAll(activeTasks)
-        tasks.addAll(completedTasks)
+        if (completed) tasks.addAll(todoService.getCompletedTasks() ?: emptyList())
         if (reverse) tasks.sortByDescending { it.id }
         return tasks
     }

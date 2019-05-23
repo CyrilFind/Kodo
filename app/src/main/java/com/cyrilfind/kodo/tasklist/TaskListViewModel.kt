@@ -37,8 +37,8 @@ class TaskListViewModel : ViewModel() {
     private fun onClickCheckbox(position: Int, checked: Boolean, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             val task = tasksList[position]
-            task.checked = todoRepository.checkTask(task, checked)
-            callback(task.checked)
+            task.completed = todoRepository.checkTask(task, checked)
+            callback(task.completed)
         }
     }
 
