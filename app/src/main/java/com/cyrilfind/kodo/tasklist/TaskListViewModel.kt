@@ -9,6 +9,7 @@ import com.cyrilfind.kodo.network.TasksRepository
 import kotlinx.coroutines.launch
 
 class TaskListViewModel : ViewModel() {
+    var showCompleted = false
     var reverseOrder = false
     private var _tasksListLiveData = MutableLiveData<List<Task>>()
     private val tasksList = mutableListOf<Task>()
@@ -55,7 +56,7 @@ class TaskListViewModel : ViewModel() {
     fun refreshTasks() {
         viewModelScope.launch {
             _isRefreshing.postValue(true)
-            todoRepository.getTasks(reverseOrder)?.let { tasks ->
+            todoRepository.getTasks(reverseOrder, showCompleted)?.let { tasks ->
                 tasksList.clear()
                 tasksList.addAll(tasks)
                 notifyLiveData()

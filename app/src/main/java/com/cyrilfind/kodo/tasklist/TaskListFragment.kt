@@ -75,6 +75,16 @@ class TaskListFragment : Fragment() {
         }?.show()
     }
 
+    private fun toggleCompleted(item: MenuItem) {
+        viewModel.showCompleted = !viewModel.showCompleted
+        val iconRes = if (viewModel.showCompleted)
+            R.drawable.ic_radio_button_unchecked_white_24dp
+        else
+            R.drawable.ic_check_circle_white_24dp
+        item.setIcon(iconRes)
+        viewModel.refreshTasks()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_task_list, menu)
     }
@@ -83,6 +93,10 @@ class TaskListFragment : Fragment() {
         return when (item.itemId) {
             R.id.action_refresh -> {
                 viewModel.refreshTasks()
+                true
+            }
+            R.id.action_show_completed -> {
+                toggleCompleted(item)
                 true
             }
             else -> super.onOptionsItemSelected(item)

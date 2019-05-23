@@ -12,3 +12,14 @@ data class Task(
     @Json(name = "completed")
     var checked: Boolean = false
 ) : Serializable
+
+
+data class ShittyTask(
+    val id: String? = null,
+    var content: String = "",
+    var checked: Int? = null
+) {
+    fun toTask(): Task {
+        return Task(id, content, checked == 1)
+    }
+}

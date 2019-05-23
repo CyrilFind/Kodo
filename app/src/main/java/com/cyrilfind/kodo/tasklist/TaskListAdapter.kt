@@ -48,9 +48,9 @@ class TaskListAdapter(
             setChecked(task.checked)
         }
 
-        private fun setChecked(reallyChecked: Boolean) {
-            binding.itemCheckBox.isChecked = reallyChecked
-            binding.itemTextView.strikeThrough = reallyChecked
+        private fun setChecked(checked: Boolean) {
+            binding.itemCheckBox.isChecked = checked
+            binding.itemTextView.strikeThrough = checked
         }
 
         private var TextView.strikeThrough
