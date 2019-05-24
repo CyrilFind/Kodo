@@ -1,5 +1,6 @@
 package com.cyrilfind.kodo.network
 
+import com.cyrilfind.kodo.BuildConfig
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -9,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object TasksApi {
-    private const val TOKEN = "***REMOVED***"
+    private const val TOKEN = BuildConfig.TOKEN
     private const val BASE_URL = "https://beta.todoist.com/API/v8/"
     val tasksService: TasksService by lazy { retrofit.create(TasksService::class.java) }
 

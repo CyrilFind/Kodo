@@ -1,5 +1,6 @@
 package com.cyrilfind.kodo.network
 
+import com.cyrilfind.kodo.BuildConfig
 import com.cyrilfind.kodo.model.Task
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -13,7 +14,7 @@ interface TasksService {
     @POST("https://todoist.com/API/v8.1/items/get_completed")
     suspend fun getCompletedTasks(
         @Field("offset") offset: Int = 0,
-        @Field("project_id") projectId: Long = ***REMOVED*** // default project_id
+        @Field("project_id") projectId: String = BuildConfig.DEFAULT_PROJECT_ID
     ): Response<List<Task>>
 
     @POST("tasks")
