@@ -9,7 +9,7 @@
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_refresh_white_24dp"/>
     <item
-            android:id="@+id/action_show_completed"
+            android:id="@+id/action_toggle_completed"
             android:title="@string/action_refresh"
             android:orderInCategory="1"
             app:showAsAction="ifRoom"

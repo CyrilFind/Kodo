@@ -1,43 +1,44 @@
 package com.cyrilfind.kodo.tasklist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.cyrilfind.kodo.model.Task
 import com.cyrilfind.kodo.network.TasksRepository
 import kotlinx.coroutines.launch
 
-class TaskListViewModel : ViewModel() {
+class TaskListViewModel(val navigator: TaskNavigator) : ViewModel(), TaskListAdapter.Listener {
     var showCompleted = false
     var reverseOrder = false
-    private var _tasksListLiveData = MutableLiveData<List<Task>>()
     private val tasksList = mutableListOf<Task>()
-    val tasksListLiveData: LiveData<List<Task>>
-        get() = _tasksListLiveData
+    private var _shouldScrollPosition = MutableLiveData<Int>()
+    val shouldScrollPosition: LiveData<Int>
+        get() = _shouldScrollPosition
 
     private var _isRefreshing = MutableLiveData<Boolean>(false)
     val isRefreshing: LiveData<Boolean>
         get() = _isRefreshing
 
     private val todoRepository = TasksRepository()
-    val recyclerAdapter = TaskListAdapter(tasksList, this::onClickDelete, this::onClickCheckbox)
+    val recyclerAdapter = TaskListAdapter(tasksList, this)
 
-    private fun onClickDelete(position: Int) {
+    override fun onClickItem(position: Int) {
+        navigator.goToTaskDetail(tasksList[position])
+    }
+
+    override fun onClickDelete(position: Int) {
         viewModelScope.launch {
-            val task = tasksListLiveData.value!![position]
+            val task = tasksList[position]
             if (todoRepository.deleteTask(task)) {
                 tasksList.remove(task)
-                notifyLiveData()
+                _shouldScrollPosition.postValue(position)
                 recyclerAdapter.notifyItemRemoved(position)
             }
         }
     }
 
-    private fun onClickCheckbox(position: Int, checked: Boolean, callback: (Boolean) -> Unit) {
+    override fun onClickCheckbox(position: Int, isChecked: Boolean, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
             val task = tasksList[position]
-            task.completed = todoRepository.checkTask(task, checked)
+            task.completed = todoRepository.checkTask(task, isChecked) && isChecked
             callback(task.completed)
         }
     }
@@ -45,9 +46,10 @@ class TaskListViewModel : ViewModel() {
     fun addTaskToList(text: String) {
         viewModelScope.launch {
             todoRepository.createTask(text)?.let { task ->
-                tasksList.add(0, task)
-                notifyLiveData()
-                recyclerAdapter.notifyItemInserted(0)
+                val position = 0
+                tasksList.add(position, task)
+                _shouldScrollPosition.postValue(position)
+                recyclerAdapter.notifyItemInserted(position)
             }
         }
     }
@@ -59,14 +61,15 @@ class TaskListViewModel : ViewModel() {
             todoRepository.getTasks(reverseOrder, showCompleted)?.let { tasks ->
                 tasksList.clear()
                 tasksList.addAll(tasks)
-                notifyLiveData()
                 recyclerAdapter.notifyDataSetChanged()
             }
             _isRefreshing.postValue(false)
         }
     }
 
-    private fun notifyLiveData() {
-        _tasksListLiveData.postValue(tasksList)
+    class Factory(private val navigator: TaskNavigator) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return TaskListViewModel(navigator) as T
+        }
     }
 }

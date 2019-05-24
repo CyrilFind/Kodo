@@ -16,10 +16,12 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.cancelButton
 import org.jetbrains.anko.okButton
 
-class TaskListFragment : Fragment() {
+class TaskListFragment : Fragment(), TaskNavigator {
     private lateinit var binding: TasksListFragmentBinding
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(TaskListViewModel::class.java)
+        val taskListViewModelFactory = TaskListViewModel.Factory(this)
+        val viewModelProvider = ViewModelProviders.of(this, taskListViewModelFactory)
+        viewModelProvider.get(TaskListViewModel::class.java)
     }
 
     private val sharedPreferences by lazy {
@@ -31,7 +33,6 @@ class TaskListFragment : Fragment() {
         setHasOptionsMenu(true)
         binding = TasksListFragmentBinding.inflate(layoutInflater)
         binding.tasksRecyclerView.adapter = viewModel.recyclerAdapter
-        viewModel.recyclerAdapter.onClickItem = this::onClickTask
         binding.fab.setOnClickListener(this::onClickFab)
         binding.swipeRefresh.setOnRefreshListener(viewModel::refreshTasks)
         binding.swipeRefresh.setColorSchemeResources(
@@ -42,8 +43,8 @@ class TaskListFragment : Fragment() {
         viewModel.isRefreshing.observe(this, Observer {
             binding.swipeRefresh.isRefreshing = it
         })
-        viewModel.tasksListLiveData.observe(this, Observer {
-            binding.tasksRecyclerView.smoothScrollToPosition(0)
+        viewModel.shouldScrollPosition.observe(this, Observer {
+            binding.tasksRecyclerView.smoothScrollToPosition(it)
         })
         viewModel.reverseOrder = sharedPreferences.getBoolean("order", false)
         viewModel.refreshTasks()
@@ -51,7 +52,7 @@ class TaskListFragment : Fragment() {
         return binding.root
     }
 
-    private fun onClickTask(task: Task) {
+    override fun goToTaskDetail(task: Task) {
         findNavController().navigate(TaskListFragmentDirections.openTask(task))
     }
 
@@ -64,9 +65,7 @@ class TaskListFragment : Fragment() {
     }
 
     private fun showAddItemDialog(onFinish: (String?) -> Unit) {
-        val editText = EditText(context)
-        editText.setText(sharedPreferences.getString("default_text", ""))
-        editText.setSelection(editText.text.length)
+        val editText = setupDialogEditText()
         context?.alert(R.string.add_task_dialog_message, R.string.add_task_dialog_title) {
             customView = editText
             okButton { onFinish(editText.text.toString()) }
@@ -75,14 +74,29 @@ class TaskListFragment : Fragment() {
         }?.show()
     }
 
-    private fun toggleCompleted(item: MenuItem) {
+    private fun setupDialogEditText(): EditText {
+        val editText = EditText(context)
+        editText.setText(sharedPreferences.getString("default_text", ""))
+        editText.setSelection(editText.text.length)
+        return editText
+    }
+
+    private fun onActionToggleCompleted(item: MenuItem) {
+        toggleMenuIcon(item)
+        toggleTaskList()
+    }
+
+    private fun toggleTaskList() {
         viewModel.showCompleted = !viewModel.showCompleted
+        viewModel.refreshTasks()
+    }
+
+    private fun toggleMenuIcon(item: MenuItem) {
         val iconRes = if (viewModel.showCompleted)
             R.drawable.ic_radio_button_unchecked_white_24dp
         else
             R.drawable.ic_check_circle_white_24dp
         item.setIcon(iconRes)
-        viewModel.refreshTasks()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,8 +109,8 @@ class TaskListFragment : Fragment() {
                 viewModel.refreshTasks()
                 true
             }
-            R.id.action_show_completed -> {
-                toggleCompleted(item)
+            R.id.action_toggle_completed -> {
+                onActionToggleCompleted(item)
                 true
             }
             else -> super.onOptionsItemSelected(item)

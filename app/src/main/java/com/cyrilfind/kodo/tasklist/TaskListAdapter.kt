@@ -9,12 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cyrilfind.kodo.databinding.ItemViewBinding
 import com.cyrilfind.kodo.model.Task
 
-class TaskListAdapter(
-    private val tasksList: MutableList<Task>,
-    private val onClickDelete: (Int) -> Unit,
-    private val onClickCheckbox: (Int, Boolean, (Boolean) -> Unit) -> Unit
-) : RecyclerView.Adapter<TaskListAdapter.TasksViewHolder>() {
-    var onClickItem: (Task) -> Unit = {}
+class TaskListAdapter(private val tasksList: MutableList<Task>, val listener: Listener) :
+    RecyclerView.Adapter<TaskListAdapter.TasksViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,15 +25,15 @@ class TaskListAdapter(
     inner class TasksViewHolder(private val binding: ItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.itemDeleteButton.setOnClickListener { onClickDelete(adapterPosition) }
+            binding.itemDeleteButton.setOnClickListener { listener.onClickDelete(adapterPosition) }
+            binding.itemCardView.setOnClickListener { listener.onClickItem(adapterPosition) }
             binding.itemCheckBox.setOnCheckedChangeListener(this::onCheckChange)
-            binding.itemCardView.setOnClickListener { onClickItem(tasksList[adapterPosition]) }
         }
 
         private fun onCheckChange(buttonView: CompoundButton, isChecked: Boolean) {
             if (!buttonView.isPressed) return // ignore changes from code
             buttonView.isEnabled = false
-            onClickCheckbox(adapterPosition, isChecked) { reallyChecked ->
+            listener.onClickCheckbox(adapterPosition, isChecked) { reallyChecked ->
                 setChecked(reallyChecked)
                 buttonView.isEnabled = true
             }
@@ -61,5 +57,11 @@ class TaskListAdapter(
                 else
                     paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
             }
+    }
+
+    interface Listener {
+        fun onClickDelete(position: Int)
+        fun onClickCheckbox(position: Int, isChecked: Boolean, callback: (Boolean) -> Unit)
+        fun onClickItem(position: Int)
     }
 }
