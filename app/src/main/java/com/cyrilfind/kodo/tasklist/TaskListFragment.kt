@@ -82,7 +82,7 @@ class TaskListFragment : Fragment(), TaskNavigator {
     }
 
     private fun onActionToggleCompleted(item: MenuItem) {
-        toggleMenuIcon(item)
+        toggleMenu(item)
         toggleTaskList()
     }
 
@@ -91,12 +91,16 @@ class TaskListFragment : Fragment(), TaskNavigator {
         viewModel.refreshTasks()
     }
 
-    private fun toggleMenuIcon(item: MenuItem) {
-        val iconRes = if (viewModel.showCompleted)
-            R.drawable.ic_radio_button_unchecked_white_24dp
-        else
-            R.drawable.ic_check_circle_white_24dp
-        item.setIcon(iconRes)
+    private fun toggleMenu(item: MenuItem) {
+        if (viewModel.showCompleted) {
+            item.setIcon(R.drawable.ic_radio_button_unchecked_white_24dp)
+            item.title = getText(R.string.action_show_completed)
+        }
+        else {
+            item.setIcon(R.drawable.ic_check_circle_white_24dp)
+            item.title = getText(R.string.action_hide_completed)
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

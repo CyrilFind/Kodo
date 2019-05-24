@@ -6,8 +6,8 @@ import com.cyrilfind.kodo.network.TasksRepository
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(val navigator: TaskNavigator) : ViewModel(), TaskListAdapter.Listener {
-    var showCompleted = false
-    var reverseOrder = false
+    var showCompleted = true
+    var reverseOrder = true
     private val tasksList = mutableListOf<Task>()
     private var _shouldScrollPosition = MutableLiveData<Int>()
     val shouldScrollPosition: LiveData<Int>

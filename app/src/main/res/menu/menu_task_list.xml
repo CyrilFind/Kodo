@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_refresh_white_24dp"/>
     <item
             android:id="@+id/action_toggle_completed"
-            android:title="@string/action_refresh"
+            android:title="@string/action_hide_completed"
             android:orderInCategory="1"
             app:showAsAction="ifRoom"
             android:icon="@drawable/ic_check_circle_white_24dp"/>
