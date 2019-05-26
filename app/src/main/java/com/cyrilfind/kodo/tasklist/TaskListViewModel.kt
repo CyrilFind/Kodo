@@ -5,7 +5,7 @@ import com.cyrilfind.kodo.model.Task
 import com.cyrilfind.kodo.network.TasksRepository
 import kotlinx.coroutines.launch
 
-class TaskListViewModel(val navigator: TaskNavigator) : ViewModel(), TaskListAdapter.Listener {
+class TaskListViewModel(private val navigator: TaskNavigator) : ViewModel(), TaskListAdapter.Listener {
     var showCompleted = true
     var reverseOrder = true
     private val tasksList = mutableListOf<Task>()

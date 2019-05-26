@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.cyrilfind.kodo.databinding.ItemViewBinding
+import com.cyrilfind.kodo.databinding.TasksListItemBinding
 import com.cyrilfind.kodo.model.Task
 
 class TaskListAdapter(private val tasksList: MutableList<Task>, val listener: Listener) :
@@ -14,7 +14,7 @@ class TaskListAdapter(private val tasksList: MutableList<Task>, val listener: Li
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemViewBinding.inflate(inflater)
+        val binding = TasksListItemBinding.inflate(inflater)
         return TasksViewHolder(binding)
     }
 
@@ -22,7 +22,7 @@ class TaskListAdapter(private val tasksList: MutableList<Task>, val listener: Li
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) = holder.bind(tasksList[position])
 
-    inner class TasksViewHolder(private val binding: ItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TasksViewHolder(private val binding: TasksListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.itemDeleteButton.setOnClickListener { listener.onClickDelete(adapterPosition) }

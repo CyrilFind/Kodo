@@ -15,11 +15,28 @@
             tools:context=".task.TaskFragment"
             app:contentPadding="@dimen/item_padding">
 
-        <TextView
-                android:id="@+id/taskTextView"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@{viewModel.task.text}"/>
+                android:orientation="vertical">
 
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/taskTextView"
+                    android:text="@{viewModel.task.text}"
+                    tools:text="Task #1"
+                    android:textAppearance="@style/defaultStyle"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/date"
+                    android:textAlignment="textEnd"
+                    android:text="@{viewModel.formattedDate}"
+                    tools:text="08 November 1992"
+                    android:textColor="@android:color/darker_gray"
+                    style="@style/defaultStyle"/>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

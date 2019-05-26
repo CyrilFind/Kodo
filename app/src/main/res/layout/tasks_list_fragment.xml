@@ -21,7 +21,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_view"
+                    tools:listitem="@layout/tasks_list_item"
                     />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

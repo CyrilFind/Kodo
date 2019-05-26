@@ -37,7 +37,7 @@
                         android:maxLength="100"
                         android:ellipsize="end"
                         android:textColor="@android:color/black"
-                        android:textAppearance="?android:textAppearanceLarge"
+                        android:textAppearance="@style/defaultStyle"
                         />
 
                 <ImageButton
