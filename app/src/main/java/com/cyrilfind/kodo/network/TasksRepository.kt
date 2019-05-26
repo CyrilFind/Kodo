@@ -25,7 +25,13 @@ class TasksRepository {
     }
 
     suspend fun createTask(text: String): Task? {
-        val createTaskResponse = todoService.createTask(Task(text = text))
+        val newTask = Task(content = text)
+        val createTaskResponse = todoService.createTask(newTask)
+        return if (createTaskResponse.isSuccessful) createTaskResponse.body() else null
+    }
+
+    suspend fun updateTask(task: Task): Task? {
+        val createTaskResponse = todoService.updateTask(task)
         return if (createTaskResponse.isSuccessful) createTaskResponse.body() else null
     }
 

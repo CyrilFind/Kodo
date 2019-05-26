@@ -40,7 +40,7 @@ class TaskListAdapter(private val tasksList: MutableList<Task>, val listener: Li
         }
 
         fun bind(task: Task) {
-            binding.itemTextView.text = task.text
+            binding.itemTextView.text = task.content
             setChecked(task.completed)
         }
 

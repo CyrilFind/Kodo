@@ -21,6 +21,10 @@ interface TasksService {
     @Headers("Content-Type: application/json")
     suspend fun createTask(@Body task: Task): Response<Task>
 
+    @POST("tasks/{id}")
+    @Headers("Content-Type: application/json")
+    suspend fun updateTask(@Body task: Task, @Path("id") id: String = task.id ?: ""): Response<Task>
+
     @DELETE("tasks/{id}")
     suspend fun deleteTask(@Path("id") id: String): Response<ResponseBody>
 

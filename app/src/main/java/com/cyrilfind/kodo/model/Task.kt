@@ -9,11 +9,11 @@ data class Task(
     @Json(name = "id")
     val id: String? = null,
     @Json(name = "content")
-    var text: String = "",
+    var content: String = "",
     @Json(name = "due")
     var due: DueDate? = null,
     @Json(name = "due_date")
-    var dueDate: String? = due?.date.toString(), // hack for sending dates
+    var dueDate: String? = due?.date?.toString(), // hack for sending dates
     @Json(name = "completed")
     var completed: Boolean = false,
     @Json(name = "checked")

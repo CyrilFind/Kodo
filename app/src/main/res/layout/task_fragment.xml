@@ -20,12 +20,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <TextView
+            <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/taskTextView"
-                    android:text="@{viewModel.task.text}"
+                    android:text="@={viewModel.content}"
+                    android:inputType="textMultiLine"
                     tools:text="Task #1"
+                    android:hint="@string/content"
                     android:textAppearance="@style/defaultStyle"/>
 
             <TextView
