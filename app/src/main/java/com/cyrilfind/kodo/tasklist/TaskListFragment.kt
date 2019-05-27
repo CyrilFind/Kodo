@@ -95,8 +95,7 @@ class TaskListFragment : Fragment(), TaskNavigator {
         if (viewModel.showCompleted) {
             item.setIcon(R.drawable.ic_radio_button_unchecked_white_24dp)
             item.title = getText(R.string.action_show_completed)
-        }
-        else {
+        } else {
             item.setIcon(R.drawable.ic_check_circle_white_24dp)
             item.title = getText(R.string.action_hide_completed)
 

@@ -5,6 +5,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingListener
 import java.util.*
 
+// Hack because two ways databinding is buggy for calendarview
 @BindingAdapter(value = ["android:onSelectedDayChange", "android:dateAttrChanged"], requireAll = false)
 fun setListeners(
     view: CalendarView, onDayChange: CalendarView.OnDateChangeListener?,

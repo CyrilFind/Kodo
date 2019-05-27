@@ -16,7 +16,6 @@ class TasksRepository {
     private suspend fun getOpenTasks(): List<Task>? {
         val tasksResponse = todoService.getTasks()
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
-
     }
 
     private suspend fun getClosedTasks(): List<Task>? {

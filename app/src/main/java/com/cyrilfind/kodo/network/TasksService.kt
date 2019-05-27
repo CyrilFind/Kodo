@@ -10,6 +10,7 @@ interface TasksService {
     @GET("tasks")
     suspend fun getTasks(): Response<List<Task>>
 
+    // Hack to get completed tasks
     @FormUrlEncoded
     @POST("https://todoist.com/API/v8.1/items/get_completed")
     suspend fun getCompletedTasks(

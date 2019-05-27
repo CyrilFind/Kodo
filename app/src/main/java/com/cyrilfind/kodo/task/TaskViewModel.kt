@@ -59,13 +59,13 @@ class TaskViewModel(var task: Task) : ViewModel() {
     private fun updateTask() {
         updateJob?.cancel()
         updateJob = viewModelScope.launch {
-            delay(DEBOUNCE_TIMEOUT) // debounce
+            delay(DEBOUNCE_TIMEOUT)
             tasksRepository.updateTask(task)
         }
     }
 
     suspend fun deleteTask() {
-       tasksRepository.deleteTask(task)
+        tasksRepository.deleteTask(task)
     }
 
     private fun updateTask(checked: Boolean) {
