@@ -1,8 +1,9 @@
-package com.cyrilfind.kodo
+package com.cyrilfind.kodo.settings
 
 import android.os.Bundle
 import android.view.Menu
 import androidx.preference.PreferenceFragmentCompat
+import com.cyrilfind.kodo.R
 
 
 class SettingsFragment : PreferenceFragmentCompat() {

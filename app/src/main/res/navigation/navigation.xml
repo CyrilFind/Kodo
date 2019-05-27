@@ -30,6 +30,6 @@
     <fragment
             tools:layout="@layout/settings_fragment"
             android:id="@+id/settings"
-            android:name="com.cyrilfind.kodo.SettingsFragment"
+            android:name="com.cyrilfind.kodo.settings.SettingsFragment"
             android:label="Settings"/>
 </navigation>

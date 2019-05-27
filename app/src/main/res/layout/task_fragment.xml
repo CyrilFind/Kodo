@@ -30,15 +30,24 @@
                     android:hint="@string/content"
                     android:textAppearance="@style/defaultStyle"/>
 
-            <TextView
+            <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/date"
+                    android:id="@+id/taskDateTextView"
                     android:textAlignment="textEnd"
-                    android:text="@{viewModel.formattedDate}"
-                    tools:text="08 November 1992"
+                    android:inputType="date"
+                    android:text="@={viewModel.formattedDate}"
+                    android:hint="@string/due_date"
+                    tools:text="08/11/1992"
                     android:textColor="@android:color/darker_gray"
                     style="@style/defaultStyle"/>
+
+            <CalendarView
+                    android:id="@+id/taskDateCalendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:date="@={viewModel.dateTime}"
+                    />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

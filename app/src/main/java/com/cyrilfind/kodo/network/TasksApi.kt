@@ -1,6 +1,7 @@
 package com.cyrilfind.kodo.network
 
 import com.cyrilfind.kodo.BuildConfig
+import com.cyrilfind.kodo.model.TaskDueDateAdapter
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
@@ -34,6 +35,7 @@ object TasksApi {
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(Date::class.java, Rfc3339DateJsonAdapter())
+        .add(TaskDueDateAdapter())
         .build()
 
     private val retrofit = Retrofit.Builder()
