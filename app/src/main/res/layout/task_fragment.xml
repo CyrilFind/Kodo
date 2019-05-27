@@ -20,15 +20,38 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <EditText
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/taskTextView"
-                    android:text="@={viewModel.content}"
-                    android:inputType="textMultiLine"
-                    tools:text="Task #1"
-                    android:hint="@string/content"
-                    android:textAppearance="@style/defaultStyle"/>
+                    android:orientation="horizontal"
+                    >
+
+                <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:checked="@={viewModel.completed}"
+                        android:layout_weight="1"/>
+
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/taskTextView"
+                        android:text="@={viewModel.content}"
+                        android:inputType="textMultiLine"
+                        tools:text="Task #1"
+                        android:hint="@string/content"
+                        android:textAppearance="@style/defaultStyle"
+                        android:layout_weight="8"/>
+
+                <ImageButton
+                        android:id="@+id/taskDeleteButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_delete_white_24dp"
+                        android:tint="@android:color/darker_gray"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="1"/>
+            </LinearLayout>
 
             <EditText
                     android:layout_width="match_parent"

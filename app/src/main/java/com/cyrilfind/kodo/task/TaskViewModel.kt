@@ -23,6 +23,13 @@ class TaskViewModel(var task: Task) : ViewModel() {
     var dateStringLiveData = MutableLiveData(formattedDate)
     var dateLiveData = MutableLiveData(dateTime)
 
+    var completed: Boolean
+        get() = task.completed
+        set(value) {
+            task.completed = value
+            updateTask(value)
+        }
+
     var dateTime: Long?
         get() = task.dueDate?.time?.plus(1) ?: System.currentTimeMillis()
         set(value) {
@@ -30,6 +37,7 @@ class TaskViewModel(var task: Task) : ViewModel() {
             dateStringLiveData.postValue(formattedDate)
             updateTask()
         }
+
     var formattedDate: String?
         get() = task.dueDate?.time?.let { DateFormat.format(DATE_PATTERN, it).toString() }
         set(value) {
@@ -41,7 +49,6 @@ class TaskViewModel(var task: Task) : ViewModel() {
                 // don't update Task
             }
         }
-
     var content
         get() = task.content
         set(value) {
@@ -55,6 +62,14 @@ class TaskViewModel(var task: Task) : ViewModel() {
             delay(DEBOUNCE_TIMEOUT) // debounce
             tasksRepository.updateTask(task)
         }
+    }
+
+    suspend fun deleteTask() {
+       tasksRepository.deleteTask(task)
+    }
+
+    private fun updateTask(checked: Boolean) {
+        viewModelScope.launch { tasksRepository.checkTask(task, checked) }
     }
 
     class Factory(private val task: Task) : ViewModelProvider.Factory {

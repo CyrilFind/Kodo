@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cyrilfind.kodo.databinding.TaskFragmentBinding
+import kotlinx.coroutines.launch
 
 
 class TaskFragment : Fragment() {
@@ -27,6 +30,12 @@ class TaskFragment : Fragment() {
             if (it != null)
                 binding.taskDateCalendarView.date = it
         })
+        binding.taskDeleteButton.setOnClickListener {
+            lifecycleScope.launch {
+                binding.viewModel?.deleteTask()
+                findNavController().popBackStack()
+            }
+        }
         return binding.root
     }
 }
