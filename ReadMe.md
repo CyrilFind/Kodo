@@ -102,7 +102,7 @@ Pour faire ça sur Android avec il faut ajouter un Interceptor au client OKHTTP 
 Alors, oui ça fait beaucoup de libs pour une seule phrase mais en vrai ça veut juste dire que chaque requête notre faite avec notre instance Retrofit va ajouter le header automatiquement:
 
 ```kotlin
-val TOKEN = "b2d1bce0c9437ed84b2bc4364413b26e8bb9f4e3"
+val TOKEN = "<INSERT_REAL_TOKEN_HERE>"
 
 val okHttpClient = 
 	    OkHttpClient.Builder()
@@ -244,14 +244,14 @@ suspend fun getCompletedTasks(
 J'ai écrit une extension sur `TextView` pour vous aider:
 
 ```kotlin
-private var TextView.strikeThrough
-		get() = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG > 0
-		set(value) {
-		    paintFlags = if (value)
-		        paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-		    else
-		        paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-    	}
+var TextView.strikeThrough
+    get() = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG > 0
+    set(value) {
+        paintFlags = if (value)
+            paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        else
+            paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+    }
 ```
 
 Exemple d'utilisation: 
