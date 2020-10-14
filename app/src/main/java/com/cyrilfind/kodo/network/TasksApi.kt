@@ -1,48 +1,58 @@
 package com.cyrilfind.kodo.network
 
-import com.cyrilfind.kodo.BuildConfig
-import com.cyrilfind.kodo.model.TaskDueDateAdapter
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import android.content.Context
+import android.preference.PreferenceManager
+import com.cyrilfind.kodo.Constants.TOKEN_PREF_KEY
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
 
-object TasksApi {
-    private const val TOKEN = BuildConfig.TOKEN
-    private const val BASE_URL = "https://beta.todoist.com/API/v8/"
+class TasksApi(private val context: Context) {
+
+    companion object {
+        lateinit var INSTANCE: TasksApi
+        private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
+    }
 
     val tasksService: TasksService by lazy { retrofit.create(TasksService::class.java) }
+    val userService: UserService by lazy { retrofit.create(UserService::class.java) }
 
     private val okHttpClient by lazy {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
-            .addNetworkInterceptor(httpLoggingInterceptor)
+            .addNetworkInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            )
             .addInterceptor { chain ->
                 val newRequest = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $TOKEN")
+                    .addHeader("Authorization", "Bearer ${getToken()}")
                     .build()
                 chain.proceed(newRequest)
             }
             .build()
     }
 
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .add(Date::class.java, Rfc3339DateJsonAdapter())
-        .add(TaskDueDateAdapter())
-        .build()
+    private val jsonSerializer = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+    }
+
+    private val converterFactory =
+        jsonSerializer.asConverterFactory("application/json".toMediaType())
 
     private val retrofit = Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .addConverterFactory(converterFactory)
         .build()
+
+    private fun getToken(): String? =
+        PreferenceManager.getDefaultSharedPreferences(context).getString(
+            TOKEN_PREF_KEY, "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1OCwiZXhwIjoxNjA4MjExODUxfQ.6DLEzX9saIuNI0hgGoQDbzRzGxhgsn5wXpfy4MD7EV8"
+        )
 }
 

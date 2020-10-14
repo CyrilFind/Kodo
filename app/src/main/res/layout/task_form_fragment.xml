@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cyrilfind.kodo.ui.taskform.TaskFormViewModel"
+            />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/taskDateCalendarView"
+        app:layout_constraintTop_toTopOf="@+id/taskDateCalendarView"
+        >
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="@+id/task_title_textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/task_title_textView"
+            />
+
+        <EditText
+            android:id="@+id/task_title_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="8"
+            android:hint="@string/title"
+            android:inputType="textMultiLine"
+            android:lines="1"
+            android:text="@={viewModel.title}"
+            android:textAppearance="@style/defaultStyle"
+            app:layout_constraintEnd_toStartOf="@+id/taskDeleteButton"
+            app:layout_constraintStart_toEndOf="@+id/checkBox3"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Task #1"
+            />
+
+        <ImageButton
+            android:id="@+id/taskDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:tint="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="@+id/task_title_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/task_title_textView"
+            app:srcCompat="@drawable/ic_delete_white_24dp"
+            />
+
+        <EditText
+            android:id="@+id/task_description_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:text="@={viewModel.description}"
+            android:textAppearance="@style/defaultStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.437"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/task_title_textView"
+            tools:text="Description"
+            />
+
+        <EditText
+            android:id="@+id/taskDateTextView"
+            style="@style/defaultStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/due_date"
+            android:inputType="date"
+            android:text=""
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/task_description_textView"
+            tools:text="08/11/1992"
+            />
+
+        <CalendarView
+            android:id="@+id/taskDateCalendarView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskDateTextView"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

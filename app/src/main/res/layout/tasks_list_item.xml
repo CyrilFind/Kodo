@@ -1,56 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/itemCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="@dimen/item_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            >
 
-        <androidx.cardview.widget.CardView
-                android:id="@+id/itemCardView"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/itemCheckBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/item_padding"
-                >
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toStartOf="@+id/task_title_textView"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+            <TextView
+                android:id="@+id/task_title_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/defaultStyle"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/task_description_textView"
+                app:layout_constraintEnd_toStartOf="@+id/itemDeleteButton"
+                app:layout_constraintStart_toEndOf="@+id/itemCheckBox"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.8"
+                tools:text="@tools:sample/lorem/random"
+                />
 
-                <CheckBox
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:id="@+id/itemCheckBox"
-                        />
+            <TextView
+                android:id="@+id/task_description_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/defaultStyle"
+                android:textColor="@android:color/tertiary_text_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/itemDeleteButton"
+                app:layout_constraintStart_toEndOf="@+id/itemCheckBox"
+                app:layout_constraintTop_toBottomOf="@+id/task_title_textView"
+                app:layout_constraintWidth_percent="0.8"
+                tools:text="@tools:sample/lorem/random"
+                />
 
-                <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:id="@+id/itemTextView"
-                        tools:text="@tools:sample/lorem/random"
-                        android:maxLength="100"
-                        android:ellipsize="end"
-                        android:textColor="@android:color/black"
-                        android:textAppearance="@style/defaultStyle"
-                        />
+            <ImageButton
+                android:id="@+id/itemDeleteButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:tint="@android:color/darker_gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/task_title_textView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_delete_white_24dp"
+                />
 
-                <ImageButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_delete_white_24dp"
-                        android:tint="@android:color/darker_gray"
-                        android:background="@android:color/transparent"
-                        android:id="@+id/itemDeleteButton"
-                        android:layout_weight="1"
-                        />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/navigation.xml"
-            app:startDestination="@+id/tasksListFragment"
-            android:label="To Do">
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation.xml"
+    android:label="To Do" app:startDestination="@+id/tasksListFragment"
+    >
 
     <fragment
-            tools:layout="@layout/tasks_list_fragment"
-            android:id="@+id/tasksListFragment"
-            android:name="com.cyrilfind.kodo.tasklist.TaskListFragment"
-            android:label="To Do">
+        android:id="@+id/tasksListFragment" android:name="com.cyrilfind.kodo.ui.tasklist.TaskListFragment"
+        android:label="To Do" tools:layout="@layout/tasks_list_fragment"
+        >
         <action
-                android:id="@+id/action_tasksListFragment_to_settings"
-                app:destination="@id/settings"/>
+            android:id="@+id/action_tasksListFragment_to_settings" app:destination="@id/settings"
+            />
         <action
-                android:id="@+id/openTask"
-                app:destination="@id/taskFragment"/>
+            android:id="@+id/openTask" app:destination="@id/taskFormFragment"
+            />
+        <action
+            android:id="@+id/action_tasksListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            />
     </fragment>
     <fragment
-            android:id="@+id/taskFragment"
-            android:name="com.cyrilfind.kodo.task.TaskFragment"
-            tools:layout="@layout/task_fragment"
-            android:label="TaskFragment">
+        android:id="@+id/taskFormFragment" android:name="com.cyrilfind.kodo.ui.taskform.TaskFormFragment"
+        android:label="TaskFormFragment" tools:layout="@layout/task_form_fragment"
+        >
         <argument
-                android:name="task"
-                app:argType="com.cyrilfind.kodo.model.Task"/>
+            android:name="task" app:argType="com.cyrilfind.kodo.model.Task"
+            />
     </fragment>
     <fragment
-            tools:layout="@layout/settings_fragment"
-            android:id="@+id/settings"
-            android:name="com.cyrilfind.kodo.settings.SettingsFragment"
-            android:label="Settings"/>
+        android:id="@+id/settings" android:name="com.cyrilfind.kodo.ui.settings.SettingsFragment"
+        android:label="Settings" tools:layout="@layout/settings_fragment"
+        />
+    <fragment
+        android:id="@+id/loginFragment" android:name="com.cyrilfind.kodo.ui.login.LoginFragment"
+        android:label="fragment_login" tools:layout="@layout/fragment_login"
+        />
 </navigation>
